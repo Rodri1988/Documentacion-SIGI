@@ -1,4 +1,4 @@
-# S.I.G.I. - Sistema Inteligente de Gestión de Incendios 🏢🔥
+# S.I.G.I. - Sistema Inteligente de Gestión de Incendios
 
 ### 🎓 Proyecto Académico - Ingeniería en Informática (Duoc UC)
 * **Asignatura:** Desarrollo Fullstack III (DSY1106)
@@ -8,7 +8,7 @@
 
 ---
 
-## 📄 Documentación Oficial (Entregables de la Rúbrica)
+## Documentación Oficial (Entregables de la Rúbrica)
 Toda la documentación y los informes requeridos para la **Evaluación Parcial N°3** se encuentran organizados en formato PDF dentro de la carpeta `/documentos` de este repositorio:
 
 1. **[Informe de Arquitectura y Persistencia](./documentos/1_Informe_Arquitectura_y_Persistencia.pdf):** 
@@ -27,16 +27,16 @@ Toda la documentación y los informes requeridos para la **Evaluación Parcial N
 
 ---
 
-## 🚀 Arquitectura y Componentes del Sistema
+##  Arquitectura y Componentes del Sistema
 
 El ecosistema de software está diseñado para mitigar fallos mediante resiliencia (Resilience4j para el servicio de geocodificación con OpenCage) y se compone de los siguientes módulos estructurados:
 
-* 💻 `/sigi-frontend`: Interfaz de usuario web desarrollada sobre un framework moderno, empaquetada bajo el estándar NPM (con su archivo `package.json` y scripts de ejecución).
-* ⚙️ `/sigi-backend`: Solución backend modularizada que aloja los microservicios core distribuidos en los puertos 8080 al 8086 (`servicio-usuario`, `servicio-reporte`, `servicio-ubicacion`, `servicio-emergencia`, `servicio-recurso`, y `servicio-notificacion`).
+*  `/sigi-frontend`: Interfaz de usuario web desarrollada sobre un framework moderno, empaquetada bajo el estándar NPM (con su archivo `package.json` y scripts de ejecución).
+*  `/sigi-backend`: Solución backend modularizada que aloja los microservicios core distribuidos en los puertos 8080 al 8086 (`servicio-usuario`, `servicio-reporte`, `servicio-ubicacion`, `servicio-emergencia`, `servicio-recurso`, y `servicio-notificacion`).
 
 ---
 
-## 🛠️ Instrucciones de Despliegue Local (Demo)
+##  Instrucciones de Despliegue Local (Demo)
 
 El proyecto incluye soporte para contenedores, permitiendo levantar todo el mapa arquitectónico de forma local:
 
