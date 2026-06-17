@@ -1,6 +1,6 @@
 # S.I.G.I. - Sistema Inteligente de Gestión de Incendios
 
-### 🎓 Proyecto Académico - Ingeniería en Informática (Duoc UC)
+###  Proyecto Académico - Ingeniería en Informática (Duoc UC)
 * **Asignatura:** Desarrollo Fullstack III (DSY1106)
 * **Caso de Estudio:** Municipalidad Valle del Sol
 * **Integrantes:** Emilio Jaramillo, Hawk Durant, Rodrigo Candia
