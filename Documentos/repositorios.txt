@@ -1,0 +1,66 @@
+REPOSITORIOS GITHUB — PROYECTO S.I.G.I
+Municipalidad Valle del Sol (caso académico Duoc UC)
+
+Integrantes: Hawk Durant, Emilio Jaramillo, Rodrigo Candia
+Fecha de actualización: junio 2026
+
+================================================================================
+1. REPOSITORIO PRINCIPAL DE DOCUMENTACIÓN
+================================================================================
+URL: https://github.com/Rodri1988/Documentacion-SIGI.git
+
+Propósito:
+  Centraliza la documentación entregable del semestre: informes técnicos,
+  guías de uso, plan de branching, análisis de patrones y material de apoyo
+  para la evaluación. Desde aquí enlazamos al resto de repositorios del
+  proyecto y dejamos versiones en PDF cuando el profesor lo pide.
+
+Contenido típico:
+  - Informe integral del proyecto SIGI
+  - Instrucciones de despliegue y pruebas
+  - Documentos de arquitectura y calidad
+
+================================================================================
+2. REPOSITORIO FRONTEND (FULL STACK)
+================================================================================
+URL: https://github.com/Rodri1988/Proyecto-Municipalidad-Valle-del-Sol
+
+Propósito:
+  Contiene el monorepo del caso semestral: carpeta Sigi_Front (React 19 +
+  Vite + Tailwind), documentación en docs/, docker-compose de referencia
+  y el README general del equipo.
+
+Tecnologías:
+  - React 19, Vite, Tailwind CSS
+  - Jest para pruebas del frontend
+  - Consumo de la API REST vía API Gateway (puerto 8080)
+
+================================================================================
+3. REPOSITORIO BACKEND — MICROSERVICIOS
+================================================================================
+URL: https://github.com/Rock14k/Proyecto-SIGI-Backend.git
+
+Propósito:
+  Backend completo en Java 17 con arquitectura de microservicios Spring Boot.
+  Incluye los ocho servicios con persistencia JPA/MySQL, Eureka, API Gateway,
+  pruebas unitarias con JaCoCo y la carpeta docs/ con informes de cobertura,
+  colección Postman y diagramas.
+
+Microservicios incluidos:
+  - eureka (8761) — registro de servicios
+  - api-gateway (8080) — entrada única, JWT
+  - servicio-usuario (8081) — autenticación y usuarios
+  - servicio-reporte (8082) — reportes ciudadanos
+  - servicio-ubicacion (8083) — geocodificación OpenCage
+  - servicio-emergencia (8084) — ciclo de vida de emergencias
+  - servicio-recurso (8085) — camiones y brigadas
+  - servicio-notificacion (8086) — alertas a usuarios
+  - servicio-empleo (8087) — avisos laborales
+  - servicio-media (8088) — imágenes de reportes y perfil
+
+================================================================================
+NOTAS
+================================================================================
+  - El JWT_SECRET debe ser el mismo en api-gateway y servicio-usuario.
+  - MySQL en Docker usa el puerto 13306 en el host (ver README del backend).
+  - Swagger UI disponible en cada microservicio: /swagger-ui.html

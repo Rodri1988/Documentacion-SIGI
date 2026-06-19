@@ -1,0 +1,324 @@
+{
+  "info": {
+    "name": "S.I.G.I Backend — API Gateway",
+    "description": "Colección Postman del backend SIGI (Municipalidad Valle del Sol).\nIntegrantes: Hawk Durant, Emilio Jaramillo, Rodrigo Candia.\n\nBase URL: http://localhost:8080\n\nFlujo recomendado:\n1. Registro o Login → guarda token en variable {{jwt}}\n2. Usar Authorization Bearer {{jwt}} en rutas /api/**\n\nSwagger alternativo: http://localhost:808X/swagger-ui.html por microservicio.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080" },
+    { "key": "jwt", "value": "" },
+    { "key": "jwt_operador", "value": "" },
+    { "key": "jwt_admin", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Autenticación",
+      "item": [
+        {
+          "name": "Registro ciudadano",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Hawk\",\n  \"apellido\": \"Durant\",\n  \"rut\": \"12.345.678-9\",\n  \"email\": \"hawk.durant@test.com\",\n  \"password\": \"secreta123\",\n  \"telefono\": \"+56911112222\",\n  \"certificadoResidenciaMediaId\": 1\n}"
+            },
+            "url": "{{baseUrl}}/auth/registro"
+          },
+          "response": []
+        },
+        {
+          "name": "Login ciudadano",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "  var j = pm.response.json();",
+                  "  pm.collectionVariables.set('jwt', j.token);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"hawk.durant@test.com\",\n  \"password\": \"secreta123\"\n}"
+            },
+            "url": "{{baseUrl}}/auth/login"
+          },
+          "response": []
+        },
+        {
+          "name": "Login operador",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "  pm.collectionVariables.set('jwt_operador', pm.response.json().token);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"emilio.jaramillo@municipalidad.cl\",\n  \"password\": \"operador123\"\n}"
+            },
+            "url": "{{baseUrl}}/auth/login"
+          },
+          "response": []
+        },
+        {
+          "name": "Login admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "  pm.collectionVariables.set('jwt_admin', pm.response.json().token);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"rodrigo.candia@municipalidad.cl\",\n  \"password\": \"admin123\"\n}"
+            },
+            "url": "{{baseUrl}}/auth/login"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Reportes",
+      "item": [
+        {
+          "name": "Crear reporte",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{jwt}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"descripcion\": \"[INCENDIO] Columna de humo detrás del colegio\",\n  \"direccion\": \"Avenida Valle del Sol 450\",\n  \"prioridad\": \"ALTA\",\n  \"fotoMediaId\": null\n}"
+            },
+            "url": "{{baseUrl}}/api/reportes"
+          },
+          "response": []
+        },
+        {
+          "name": "Listar pendientes (operador)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{jwt_operador}}" }],
+            "url": "{{baseUrl}}/api/reportes/pendientes"
+          },
+          "response": []
+        },
+        {
+          "name": "Validar reporte (aprobado → emergencia)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{jwt_operador}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"aprobado\": true,\n  \"notasOperador\": \"Confirmado por central — Emilio Jaramillo\"\n}"
+            },
+            "url": "{{baseUrl}}/api/reportes/1/validar"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Ubicaciones",
+      "item": [
+        {
+          "name": "Coordenadas por dirección",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{jwt}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/ubicaciones/coordenadas?direccion=Valle del Sol 450",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "ubicaciones", "coordenadas"],
+              "query": [{ "key": "direccion", "value": "Valle del Sol 450" }]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Emergencias",
+      "item": [
+        {
+          "name": "Listar activas",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{jwt_operador}}" }],
+            "url": "{{baseUrl}}/api/emergencias/activas"
+          },
+          "response": []
+        },
+        {
+          "name": "Actualizar estado",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{jwt_operador}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"estado\": \"RESUELTA\",\n  \"notas\": \"Incendio controlado por brigada\"\n}"
+            },
+            "url": "{{baseUrl}}/api/emergencias/1/estado"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Recursos",
+      "item": [
+        {
+          "name": "Listar disponibles",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{jwt_operador}}" }],
+            "url": "{{baseUrl}}/api/recursos/disponibles"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Notificaciones",
+      "item": [
+        {
+          "name": "Por usuario",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{jwt}}" }],
+            "url": "{{baseUrl}}/api/notificaciones/usuario/1"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Empleos",
+      "item": [
+        {
+          "name": "Listar avisos activos",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{jwt}}" }],
+            "url": "{{baseUrl}}/api/empleos"
+          },
+          "response": []
+        },
+        {
+          "name": "Postular",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{jwt}}" }],
+            "url": "{{baseUrl}}/api/empleos/1/postular"
+          },
+          "response": []
+        },
+        {
+          "name": "Crear aviso (admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{jwt_admin}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"Auxiliar municipal\",\n  \"departamento\": \"Obras\",\n  \"plazas\": 2,\n  \"descripcion\": \"Apoyo en faenas menores\",\n  \"fechaCierre\": \"2026-12-01\"\n}"
+            },
+            "url": "{{baseUrl}}/api/empleos"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Media",
+      "item": [
+        {
+          "name": "Subir imagen reporte",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{jwt}}" }],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "file", "type": "file", "src": "" },
+                { "key": "tipo", "value": "REPORTE", "type": "text" }
+              ]
+            },
+            "url": "{{baseUrl}}/api/media/upload"
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener metadata",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{jwt}}" }],
+            "url": "{{baseUrl}}/api/media/1"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Usuarios",
+      "item": [
+        {
+          "name": "Listar todos (admin)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{jwt_admin}}" }],
+            "url": "{{baseUrl}}/api/usuarios"
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener por ID",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{jwt}}" }],
+            "url": "{{baseUrl}}/api/usuarios/1"
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
